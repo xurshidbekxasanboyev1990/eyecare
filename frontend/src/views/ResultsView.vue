@@ -2,86 +2,11 @@
 import { onMounted, ref } from 'vue';
 import { useEyeTestStore } from '../stores/useEyeTestStore';
 import { useRouter } from 'vue-router';
-import { Download, Share2, RefreshCw, Home, Send, Loader2 } from 'lucide-vue-next';
+import { Download, Share2, RefreshCw, Home, Loader2 } from 'lucide-vue-next';
 
 const store = useEyeTestStore();
 const router = useRouter();
-const isTelegram = ref(false);
-const isSending = ref(false);
-
-const checkTelegram = () => {
-    if (window.Telegram?.WebApp) {
-        isTelegram.value = true;
-        window.Telegram.WebApp.ready();
-        window.Telegram.WebApp.expand();
-    }
-};
-
-const sendToBot = async () => {
-    isSending.value = true;
-    
-    // 1. Generate Diagnosis
-    const r = store.results;
-    let diagnoses = [];
-    let recs = [];
-    let exercises = [];
-
-    // Simple Logic
-    // Acuity
-    if (r.visualAcuity.score && r.visualAcuity.score !== '20/20' && r.visualAcuity.score !== '20/15') {
-        diagnoses.push(`Ko'rish o'tkirligi pasaygan (${r.visualAcuity.score})`);
-        recs.push("Okulist ko'rigidan o'tib, ko'zoynak tanlash maslahat beriladi.");
-    }
-
-    // Color
-    if (r.colorBlindness.score !== 'Normal') {
-        diagnoses.push("Rang ajratishda nuqsonlar (Daltonizm ehtimoli)");
-    }
-
-    // Amsler
-    if (r.amslerGrid.hasDistortion) {
-        diagnoses.push("Makula degeneratsiyasi belgilari (Amsler)");
-        recs.push("Zudlik bilan to'r parda tekshiruvi zarur!");
-    }
-
-    // Dry Eye
-    if (parseFloat(r.dryEye.score) < 10) {
-        diagnoses.push("Quruq ko'z sindromi");
-        recs.push("Sun'iy ko'z yoshi tomchilaridan foydalanish.");
-        exercises.push("20-20-20 qoidasi: Har 20 daqiqada 20 soniya uzoqqa qarash.");
-    }
-
-    // Astigmatism
-    if (r.astigmatism.hasIssue) {
-        diagnoses.push("Astigmatizm belgilari");
-    }
-
-    if (diagnoses.length === 0) {
-        diagnoses.push("Ko'rish qobiliyati me'yorda.");
-        recs.push("Yilda bir marta profilaktik ko'rikdan o'ting.");
-    }
-
-    const payload = {
-        diag: diagnoses.join('\n'),
-        color_res: r.colorBlindness.score || "Topshirilmagan",
-        exercise: exercises.length > 0 ? exercises.join('\n') : "Ko'z gimnastikasi mashqlari.",
-        meds: recs.join('\n'),
-        full_data: r // Sending raw data for AI analysis if needed
-    };
-
-    // Send to Telegram
-    if (window.Telegram?.WebApp) {
-        window.Telegram.WebApp.sendData(JSON.stringify(payload));
-    } else {
-        alert("Bu funksiya faqat Telegram ichida ishlaydi!");
-        console.log(payload);
-    }
-    isSending.value = false;
-};
-
-onMounted(() => {
-    checkTelegram();
-});
+const isGeneratingPdf = ref(false);
 
 const restart = () => {
     store.resetTests();
@@ -97,6 +22,11 @@ const formatDate = () => {
         minute: '2-digit'
     });
 };
+
+const downloadPdf = () => {
+    // In a real app we'd trigger a PDF generation library like jspdf here
+    alert("Hozircha demo rejimda PDF yuklab bo'lmaydi.");
+}
 </script>
 
 <template>
@@ -264,14 +194,7 @@ const formatDate = () => {
                  Qayta Topshirish
             </button>
             
-            <button v-if="isTelegram" @click="sendToBot" 
-              class="bg-brand-blue text-white hover:bg-blue-600 py-6 px-6 rounded-2xl font-bold shadow-lg shadow-blue-200 flex items-center justify-center gap-3 text-lg transition animate-pulse"
-              :disabled="isSending">
-                <component :is="isSending ? Loader2 : Send" class="w-6 h-6" :class="{ 'animate-spin': isSending }" />
-                {{ isSending ? 'Yuborilmoqda...' : 'Botga Yuborish' }}
-            </button>
-            
-            <button v-else class="bg-slate-800 text-white hover:bg-slate-700 py-6 px-6 rounded-2xl font-bold shadow-lg flex items-center justify-center gap-3 text-lg transition">
+            <button @click="downloadPdf" class="bg-slate-800 text-white hover:bg-slate-700 py-6 px-6 rounded-2xl font-bold shadow-lg flex items-center justify-center gap-3 text-lg transition">
                  <Download class="w-6 h-6" />
                  PDF Yuklab Olish (Demo)
             </button>

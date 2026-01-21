@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { useStorage } from '@vueuse/core';
 
 export const useEyeTestStore = defineStore('eyeTest', () => {
-    // State
-    const results = ref({
+    // State - Persisted to LocalStorage
+    const results = useStorage('eyeTestResults', {
         visualAcuity: { score: null, details: [] }, // 20/20, 20/40 etc.
         colorBlindness: { score: null, details: [] },
         amslerGrid: { hasDistortion: false, details: '' },
@@ -16,7 +17,11 @@ export const useEyeTestStore = defineStore('eyeTest', () => {
         dryEye: { holdTime: 0, details: '' },
     });
 
-    const currentTestIndex = ref(0);
+    const currentTestIndex = useStorage('eyeTestCurrentIndex', 0);
+    
+    // pxPerCm state removed as user requested simple fixed sizes
+    // const pxPerCm = ref(null); 
+    
     const tests = [
         { id: 'visual-acuity', name: "Ko'rish O'Tkirligi", path: '/test/visual-acuity' },
         { id: 'color-blindness', name: "Rang Ajratish", path: '/test/color-blindness' },
@@ -27,7 +32,6 @@ export const useEyeTestStore = defineStore('eyeTest', () => {
         { id: 'near-vision', name: "Yaqindan Ko'rish", path: '/test/near-vision' },
         { id: 'red-desaturation', name: "Qizil Rang (Nerv)", path: '/test/red-desaturation' },
         { id: 'dry-eye', name: "Quruq Ko'z (Blink)", path: '/test/dry-eye' },
-        // { id: 'perimetry', name: "Perimetriya", path: '/test/perimetry' }, // Webda qiyin, lekin qo'shish mumkin
     ];
 
     // Actions
@@ -38,12 +42,13 @@ export const useEyeTestStore = defineStore('eyeTest', () => {
     }
 
     function resetTests() {
+        // Reset storage
         results.value = {
             visualAcuity: { score: null, details: [] },
             colorBlindness: { score: null, details: [] },
             amslerGrid: { hasDistortion: false, details: '' },
             contrastSensitivity: { score: null, details: [] },
-            perimetry: { score: null, details: [] }, // Added state here too
+            perimetry: { score: null, details: [] },
             astigmatism: { hasIssue: false, details: '' },
             duochrome: { preference: null, details: '' },
             nearVision: { score: null, details: [] },
@@ -54,8 +59,8 @@ export const useEyeTestStore = defineStore('eyeTest', () => {
     }
 
     return {
-        pxPerCm,
-        setCalibration,
+        // pxPerCm,
+        // setCalibration,
         results,
         tests,
         currentTestIndex,

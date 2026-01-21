@@ -59,19 +59,20 @@ const drawPlate = () => {
 
     // 2. Circle Packing
     const circles = [];
-    const minR = w * 0.008;
-    const maxR = w * 0.025;
-    const totalCircles = 2500; // Attempt count
+    const minR = w * 0.015; // Increased min size slightly
+    const maxR = w * 0.035; // Increased max size slightly
+    
+    // Reduce counts for performance on mobile
+    const targetCircles = 600; 
+    const maxAttempts = 3000;
 
     ctx.clearRect(0, 0, w, h);
 
-    // Draw background circle (faint border)
-    // ctx.beginPath();
-    // ctx.arc(w/2, h/2, radius, 0, Math.PI * 2);
-    // ctx.stroke();
-
+    // Use a non-blocking generation if possible, but for simplicity here we just reduce the load
+    // For very smooth UI, we should use requestAnimationFrame chaining, but reducing count is simpler safe fix first.
+    
     let attempts = 0;
-    while (circles.length < 1200 && attempts < 10000) {
+    while (circles.length < targetCircles && attempts < maxAttempts) {
         attempts++;
         const r = minR + Math.random() * (maxR - minR);
         // Random position in circle
