@@ -37,10 +37,13 @@ const completeTest = (canSeeAll) => {
 };
 
 const handleSelection = (levelIndex) => {
+    // contrastLevels are Top (100%) to Bottom (1%). Higher index = Better sensitivity.
     const result = contrastLevels[levelIndex];
+    
+    // We want to save a score like "1.65 logCS" or just the % string
     store.saveResult('contrastSensitivity', { 
-        score: result.label, 
-        details: `Minimum contrast detected: ${result.label}` 
+        score: result.label.split(' ')[0], // "2.5%"
+        details: `Eng past kontrast: ${result.label}` 
     });
     router.push('/test/astigmatism');
 };

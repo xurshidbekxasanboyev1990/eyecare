@@ -86,12 +86,11 @@ const handleScreenClick = () => {
 
 const finishTest = () => {
     isStarted.value = false;
-    const resultScore = Math.round((score.value / totalAttempts) * 100) + '%';
-    const isNormal = score.value > 7; // > 70%
+    const resultScore = Math.round((score.value / totalAttempts) * 100); // 90
     
     store.saveResult('perimetry', {
-        score: isNormal ? 'Normal' : 'Cheklovlar aniqlandi',
-        details: `Aniqlangan signallar: ${score.value}/${totalAttempts} (${resultScore})`
+        score: resultScore, // Store number for result view
+        details: `Aniqlangan signallar: ${score.value}/${totalAttempts}`
     });
     router.push('/test/dry-eye');
 };

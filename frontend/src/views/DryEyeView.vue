@@ -33,7 +33,8 @@ const handleBlink = () => {
     const resultDetails = duration.value < 10 
         ? 'Quruq ko\'z sindromi ehtimoli bor (<10s)' 
         : 'Me\'yorida (>10s)';
-        
+    
+    // Ensure accurate storage format for ResultsView: it parses parseFloat(score)
     store.saveResult('dryEye', { 
         score: duration.value.toFixed(1) + ' sekund', 
         details: resultDetails 

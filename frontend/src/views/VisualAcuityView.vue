@@ -2,10 +2,11 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useEyeTestStore } from '../stores/useEyeTestStore';
-import { ArrowUp, ArrowRight, ArrowDown, ArrowLeft } from 'lucide-vue-next';
+import { ArrowUp, ArrowRight, ArrowDown, ArrowLeft, Sun, ScanEye, CheckCircle2 } from 'lucide-vue-next';
 
 const router = useRouter();
 const store = useEyeTestStore();
+// showPreCheck removed as we now have AI Distance Check
 
 const levels = [
   { size: 200, label: '20/200' }, // Huge
@@ -83,6 +84,8 @@ const finishTest = (scoreLabel) => {
 
 <template>
   <div class="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-4">
+    <!-- Pre-Check Modal Removed -->
+
     <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center">
         <h1 class="text-3xl font-extrabold mb-4 text-slate-800">Ko'rish O'tkirligi</h1>
         
@@ -91,6 +94,7 @@ const finishTest = (scoreLabel) => {
                 Qurilmani ko'zingizdan <b>40-50 sm (bir qo'l)</b> masofada tuting.
                 <br>Bir ko'zingizni yoping va ekrandagi harf/belgi yo'nalishini toping.
             </p>
+
             
             <div class="flex justify-center gap-4 mb-8">
                 <button 

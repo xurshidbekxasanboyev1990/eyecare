@@ -12,7 +12,7 @@ export const useEyeTestStore = defineStore('eyeTest', () => {
         perimetry: { score: null, details: [] },
         astigmatism: { hasIssue: false, details: '' },
         duochrome: { preference: null, details: '' },
-        nearVision: { score: null, details: [] },
+        nearVision: { score: null, details: '' },
         redDesaturation: { hasIssue: false, details: '' },
         dryEye: { holdTime: 0, details: '' },
     });
@@ -31,6 +31,7 @@ export const useEyeTestStore = defineStore('eyeTest', () => {
         { id: 'duochrome', name: "Duoxrom (Aniqlik)", path: '/test/duochrome' },
         { id: 'near-vision', name: "Yaqindan Ko'rish", path: '/test/near-vision' },
         { id: 'red-desaturation', name: "Qizil Rang (Nerv)", path: '/test/red-desaturation' },
+        { id: 'perimetry', name: "Perimetriya (Ko'rish Maydoni)", path: '/test/perimetry' },
         { id: 'dry-eye', name: "Quruq Ko'z (Blink)", path: '/test/dry-eye' },
     ];
 

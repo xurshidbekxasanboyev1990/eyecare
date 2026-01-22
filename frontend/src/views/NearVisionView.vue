@@ -22,7 +22,7 @@ const textBlocks = [
 const selectedLevel = ref(null);
 
 const completeTest = () => {
-    if (!selectedLevel.value) return;
+    if (selectedLevel.value === null) return;
     
     // Logic: If they can read J2 (index 1) or J1 (index 0), it's good.
     const result = textBlocks[selectedLevel.value];
