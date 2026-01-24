@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import VisualAcuityView from '../views/VisualAcuityView.vue';
 import ColorBlindnessView from '../views/ColorBlindnessView.vue';
+import HomeView from '../views/HomeView.vue';
 import ResultsView from '../views/ResultsView.vue';
+import VisualAcuityView from '../views/VisualAcuityView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -66,6 +66,11 @@ const router = createRouter({
             path: '/test/dry-eye',
             name: 'dry-eye',
             component: () => import('../views/DryEyeView.vue')
+        },
+        {
+            path: '/admin',
+            name: 'admin',
+            component: () => import('../views/AdminView.vue')
         }
     ]
 });

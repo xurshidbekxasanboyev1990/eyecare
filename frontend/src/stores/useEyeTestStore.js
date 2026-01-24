@@ -1,6 +1,5 @@
-import { defineStore } from 'pinia';
-import { ref } from 'vue';
 import { useStorage } from '@vueuse/core';
+import { defineStore } from 'pinia';
 
 export const useEyeTestStore = defineStore('eyeTest', () => {
     // State - Persisted to LocalStorage
@@ -18,10 +17,10 @@ export const useEyeTestStore = defineStore('eyeTest', () => {
     });
 
     const currentTestIndex = useStorage('eyeTestCurrentIndex', 0);
-    
+
     // pxPerCm state removed as user requested simple fixed sizes
     // const pxPerCm = ref(null); 
-    
+
     const tests = [
         { id: 'visual-acuity', name: "Ko'rish O'Tkirligi", path: '/test/visual-acuity' },
         { id: 'color-blindness', name: "Rang Ajratish", path: '/test/color-blindness' },

@@ -6,7 +6,6 @@ import { ArrowUp, ArrowRight, ArrowDown, ArrowLeft, Sun, ScanEye, CheckCircle2 }
 
 const router = useRouter();
 const store = useEyeTestStore();
-// showPreCheck removed as we now have AI Distance Check
 
 const levels = [
   { size: 200, label: '20/200' }, // Huge
