@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand-blue: #007AFF;
+  --color-brand-light-blue: #E5F1FF;
+  --color-slate-medical: #F8FAFC;
+  --font-sans: Inter, sans-serif;
+}
+
+body {
+  @apply bg-slate-50 text-slate-900;
+}
