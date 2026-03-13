@@ -1,0 +1,26 @@
+services:
+  eyecare_kuaf:
+    restart: unless-stopped
+    container_name: eyecare_kuaf
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - '${APP_PORT:-8092}:80'
+    env_file:
+      - .env
+    volumes:
+      - eyecare_uploads:/app/uploads
+      - eyecare_logs:/app/logs
+    networks:
+      - president
+
+volumes:
+  eyecare_uploads:
+    driver: local
+  eyecare_logs:
+    driver: local
+
+networks:
+  president:
+    external: true

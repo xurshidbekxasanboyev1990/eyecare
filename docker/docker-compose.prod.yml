@@ -60,10 +60,7 @@ services:
       - DEBUG=false
       - SECRET_KEY=${SECRET_KEY}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
-      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}
-      - TELEGRAM_WEBAPP_URL=${APP_URL:-https://eyecare.uz}
-      - TELEGRAM_WEBHOOK_URL=${APP_URL:-https://eyecare.uz}/webhook/telegram
-      - CORS_ORIGINS=["${APP_URL:-https://eyecare.uz}","https://www.${DOMAIN:-eyecare.uz}"]
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN:-}\n      - TELEGRAM_WEBAPP_URL=${APP_URL:-https://eyecare.uz}\n      - CORS_ORIGINS=["${APP_URL:-https://eyecare.uz}","https://www.${DOMAIN:-eyecare.uz}"]
       - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - ADMIN_EMAIL=${ADMIN_EMAIL:-admin@eyecare.uz}

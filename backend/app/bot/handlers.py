@@ -278,7 +278,7 @@ async def cmd_start(message: Message, state: FSMContext):
     await state.clear()
     
     # Get web app URL from settings
-    web_app_url = settings.bot_webhook_url.replace("/bot/webhook", "")
+    web_app_url = settings.TELEGRAM_WEBAPP_URL
     if not web_app_url:
         web_app_url = "https://eyecare.uz"
     
@@ -403,11 +403,7 @@ async def handle_age_for_cataract(message: Message, state: FSMContext):
         await state.update_data(age=age)
         
         # Send cataract/contrast test
-        web_app_url = settings.bot_webhook_url.replace("/bot/webhook", "") or "https://eyecare.uz"
-        
-        await message.answer(
-            MESSAGES["test_intro"].format(
-                test_name="Kontrast Sezgirligi (Katarakta)",
+        web_app_url = settings.TELEGRAM_WEBAPP_URL or "https://eyecare.uz"
                 description="kontrast ko'rish qobiliyatini tekshiradi. 9 ta turli xiralik va rangli filtrlar bilan test",
                 distance="1"
             ),
@@ -469,7 +465,7 @@ async def handle_distant_blur(callback: CallbackQuery, state: FSMContext):
         data = await state.get_data()
         age = data.get("age", 25)
         
-        web_app_url = settings.bot_webhook_url.replace("/bot/webhook", "") or "https://eyecare.uz"
+        web_app_url = settings.TELEGRAM_WEBAPP_URL or "https://eyecare.uz"
         
         await callback.message.edit_text(
             MESSAGES["test_intro"].format(
@@ -502,7 +498,7 @@ async def handle_peripheral(callback: CallbackQuery, state: FSMContext):
     
     if answer in ["sometimes", "often"]:
         # Send Glaucoma test (Perimetry)
-        web_app_url = settings.bot_webhook_url.replace("/bot/webhook", "") or "https://eyecare.uz"
+        web_app_url = settings.TELEGRAM_WEBAPP_URL or "https://eyecare.uz"
         
         await callback.message.edit_text(
             MESSAGES["test_intro"].format(
@@ -562,7 +558,7 @@ async def handle_floaters(callback: CallbackQuery, state: FSMContext):
 async def handle_complaint(callback: CallbackQuery, state: FSMContext):
     """Handle complaint menu selection"""
     complaint = callback.data.split(":")[1]
-    web_app_url = settings.bot_webhook_url.replace("/bot/webhook", "") or "https://eyecare.uz"
+    web_app_url = settings.TELEGRAM_WEBAPP_URL or "https://eyecare.uz"
     
     test_configs = {
         "myopia": {
@@ -778,11 +774,7 @@ async def handle_daltonism_confirm(callback: CallbackQuery, state: FSMContext):
     answer = callback.data.split(":")[1]
     
     if answer == "yes":
-        web_app_url = settings.bot_webhook_url.replace("/bot/webhook", "") or "https://eyecare.uz"
-        
-        await callback.message.edit_text(
-            MESSAGES["test_intro"].format(
-                test_name="Daltonizm (Ishihara)",
+        web_app_url = settings.TELEGRAM_WEBAPP_URL or "https://eyecare.uz"
                 description="rang ajratish qobiliyatini tekshiradi",
                 distance="0.75"
             ),
@@ -887,15 +879,3 @@ async def start_polling():
     
     logger.info("🤖 Starting bot polling...")
     await dp.start_polling(bot)
-
-
-async def setup_webhook(bot: Bot):
-    """Setup webhook for production"""
-    webhook_url = settings.bot_webhook_url
-    
-    if webhook_url:
-        await bot.set_webhook(
-            url=webhook_url,
-            secret_token=settings.bot_webhook_secret
-        )
-        logger.info(f"🌐 Webhook set to: {webhook_url}")

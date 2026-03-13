@@ -1099,35 +1099,6 @@ idle
 └─────────────────────────────────┘
 ```
 
-### Webhook Events
-
-#### Test Completed Notification
-```json
-{
-    "type": "test_completed",
-    "user_telegram_id": 123456789,
-    "data": {
-        "session_id": "uuid",
-        "overall_status": "normal",
-        "pdf_url": "https://..."
-    }
-}
-```
-
-#### Appointment Reminder
-```json
-{
-    "type": "appointment_reminder",
-    "user_telegram_id": 123456789,
-    "data": {
-        "appointment_id": "uuid",
-        "doctor_name": "Dr. Abdullayev",
-        "scheduled_at": "2026-01-30T10:00:00Z",
-        "reminder_type": "24h" // or "1h"
-    }
-}
-```
-
 ### Bot Message Templates
 
 ```javascript
@@ -1517,8 +1488,6 @@ JWT_REFRESH_EXPIRY=30d
 
 # Telegram Bot
 BOT_TOKEN=1234567890:ABCdefGHIjklMNOpqrsTUVwxyz
-BOT_WEBHOOK_URL=https://api.eyecare.uz/bot/webhook
-BOT_WEBHOOK_SECRET=random-secret-string
 
 # SMS (Eskiz.uz)
 ESKIZ_EMAIL=your@email.com

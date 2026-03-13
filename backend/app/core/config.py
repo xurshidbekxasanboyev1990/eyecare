@@ -51,22 +51,12 @@ class Settings(BaseSettings):
     
     # ==== Telegram Bot ====
     TELEGRAM_BOT_TOKEN: str = ""
-    TELEGRAM_WEBHOOK_URL: str = ""
     TELEGRAM_WEBAPP_URL: str = "https://eyecare.uz"
     TELEGRAM_BOT_USERNAME: str = "eyecare_bot"
     
-    # Aliases for backward compatibility
     @property
     def bot_token(self) -> str:
         return self.TELEGRAM_BOT_TOKEN
-    
-    @property
-    def bot_webhook_url(self) -> str:
-        return self.TELEGRAM_WEBHOOK_URL
-    
-    @property
-    def bot_webhook_secret(self) -> str:
-        return self.SECRET_KEY[:32]
     
     # ==== Admin ====
     ADMIN_USERNAME: str = "admin"

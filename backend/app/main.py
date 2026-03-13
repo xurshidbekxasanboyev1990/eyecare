@@ -94,19 +94,10 @@ async def lifespan(app: FastAPI):
             from app.bot.handlers import create_bot, start_polling
             bot, dp = await create_bot()
             
-            if settings.TELEGRAM_WEBHOOK_URL:
-                # Production: Use webhook
-                await bot.set_webhook(
-                    url=settings.TELEGRAM_WEBHOOK_URL,
-                    secret_token=settings.bot_webhook_secret
-                )
-                logger.info(f"✅ Telegram bot webhook set: {settings.TELEGRAM_WEBHOOK_URL}")
-            else:
-                # Development: Use polling
-                async def run_bot():
-                    await dp.start_polling(bot)
-                bot_task = asyncio.create_task(run_bot())
-                logger.info("✅ Telegram bot polling started")
+            async def run_bot():
+                await dp.start_polling(bot)
+            bot_task = asyncio.create_task(run_bot())
+            logger.info("✅ Telegram bot polling started")
                 
         except Exception as e:
             logger.error(f"❌ Telegram bot initialization failed: {e}")
@@ -303,25 +294,6 @@ async def root():
         "docs": "/docs" if settings.DEBUG else None,
         "health": "/health"
     }
-
-
-# Telegram webhook endpoint (production)
-@app.post("/webhook/telegram")
-async def telegram_webhook(request: Request):
-    """Telegram webhook endpoint"""
-    if not bot or not dp:
-        raise HTTPException(status_code=503, detail="Bot not initialized")
-    
-    try:
-        data = await request.json()
-        # Process update
-        from aiogram.types import Update
-        update = Update.model_validate(data)
-        await dp.feed_update(bot, update)
-        return {"ok": True}
-    except Exception as e:
-        logger.error(f"Webhook error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Run with uvicorn

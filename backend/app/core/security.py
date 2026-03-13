@@ -296,26 +296,3 @@ def hash_token(token: str) -> str:
         SHA256 hash of token
     """
     return hashlib.sha256(token.encode()).hexdigest()
-
-
-def verify_webhook_signature(payload: bytes, signature: str, secret: str) -> bool:
-    """
-    Verify webhook signature (HMAC-SHA256).
-    
-    Args:
-        payload: Raw request body
-        signature: Provided signature
-        secret: Webhook secret
-        
-    Returns:
-        True if signature is valid
-    """
-    import hmac
-    
-    expected = hmac.new(
-        secret.encode(),
-        payload,
-        hashlib.sha256
-    ).hexdigest()
-    
-    return hmac.compare_digest(expected, signature)

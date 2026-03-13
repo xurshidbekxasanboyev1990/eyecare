@@ -14,27 +14,16 @@ CREATE DATABASE eyecare OWNER eyecare;
 
 ## .env sozlash
 
-Asosiy papkadagi `.env` faylga qo'shish:
+```bash
+cp .env.example .env
+```
 
-```
-EYECARE_PORT=8092
-EYECARE_DB_USER=eyecare
-EYECARE_DB_PASSWORD=eyecare123
-EYECARE_DB_NAME=eyecare
-EYECARE_SECRET_KEY=<32+ belgili kalit>
-EYECARE_JWT_SECRET_KEY=<32+ belgili kalit>
-EYECARE_WORKERS=2
-EYECARE_APP_URL=https://eye.kuaf.uz
-EYECARE_BOT_TOKEN=<telegram bot token>
-EYECARE_ADMIN_USER=admin
-EYECARE_ADMIN_PASSWORD=<parol>
-EYECARE_ADMIN_EMAIL=admin@eyecare.uz
-```
+`.env` faylni to'ldiring (DATABASE_URL, SECRET_KEY, JWT_SECRET_KEY, TELEGRAM_BOT_TOKEN).
 
 ## Ishga tushirish
 
 ```bash
-docker compose up -d --build eyecare_kuaf
+docker compose up -d --build
 ```
 
 ## Tekshirish
@@ -48,7 +37,7 @@ curl http://localhost:8092/api/v1/health
 
 ```bash
 git pull
-docker compose up -d --build eyecare_kuaf
+docker compose up -d --build
 ```
 
 ## Loglar
