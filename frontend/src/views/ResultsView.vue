@@ -34,25 +34,74 @@ const formatDate = () => {
     });
 };
 
-const downloadPdf = () => {
+const downloadPdf = async () => {
     isGeneratingPdf.value = true;
     const element = pdfContent.value;
     
     // Hidden PDF container is displayed for capture
     element.style.display = 'block';
+    
+    // Fix oklch colors - replace with RGB equivalents for html2pdf compatibility
+    const fixColors = (el) => {
+        const computedStyle = window.getComputedStyle(el);
+        const bgColor = computedStyle.backgroundColor;
+        const textColor = computedStyle.color;
+        const borderColor = computedStyle.borderColor;
+        
+        // Convert oklch to rgb if needed
+        if (bgColor && bgColor.includes('oklch')) {
+            el.style.backgroundColor = '#ffffff';
+        }
+        if (textColor && textColor.includes('oklch')) {
+            el.style.color = '#1e293b';
+        }
+        if (borderColor && borderColor.includes('oklch')) {
+            el.style.borderColor = '#e2e8f0';
+        }
+        
+        // Process children
+        Array.from(el.children).forEach(child => fixColors(child));
+    };
+    
+    // Clone element to avoid modifying original
+    const clone = element.cloneNode(true);
+    clone.style.position = 'absolute';
+    clone.style.left = '-9999px';
+    clone.style.backgroundColor = '#ffffff';
+    document.body.appendChild(clone);
+    
+    // Apply inline styles to ensure colors work
+    const applyInlineStyles = (el) => {
+        const computed = window.getComputedStyle(el);
+        el.style.backgroundColor = computed.backgroundColor.includes('oklch') ? '#ffffff' : computed.backgroundColor;
+        el.style.color = computed.color.includes('oklch') ? '#1e293b' : computed.color;
+        Array.from(el.children).forEach(child => applyInlineStyles(child));
+    };
+    applyInlineStyles(clone);
 
     const opt = {
         margin:       10,
         filename:     `EyeCare-Natijalar-${new Date().toISOString().slice(0,10)}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
+        html2canvas:  { 
+            scale: 2, 
+            useCORS: true,
+            backgroundColor: '#ffffff',
+            logging: false
+        },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    html2pdf().set(opt).from(element).save().then(() => {
+    try {
+        await html2pdf().set(opt).from(clone).save();
+    } catch (error) {
+        console.error('PDF generation error:', error);
+        alert('PDF yaratishda xatolik. Iltimos qayta urinib ko\'ring.');
+    } finally {
+        document.body.removeChild(clone);
         element.style.display = 'none';
         isGeneratingPdf.value = false;
-    });
+    }
 }
 
 const analysis = computed(() => {
@@ -95,9 +144,9 @@ const analysis = computed(() => {
 
 <template>
   <div class="min-h-screen bg-slate-50 pb-20">
-    <div ref="pdfContent" class="max-w-3xl mx-auto bg-white min-h-screen shadow-2xl relative">
+    <div ref="pdfContent" class="max-w-3xl mx-auto bg-white min-h-screen shadow-2xl relative" style="background-color: #ffffff !important;">
         <!-- Header -->
-        <div class="bg-slate-900 text-white p-8 relative overflow-hidden">
+        <div class="bg-slate-900 text-white p-8 relative overflow-hidden" style="background-color: #0f172a !important; color: #ffffff !important;">
              <div class="relative z-10 flex justify-between items-start">
                  <div>
                      <h1 class="text-3xl font-extrabold mb-1">EyeCare</h1>

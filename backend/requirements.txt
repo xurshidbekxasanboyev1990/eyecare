@@ -1,0 +1,49 @@
+# EyeCare Backend - Requirements
+# FastAPI & Server
+fastapi==0.109.2
+uvicorn[standard]==0.27.1
+python-multipart==0.0.9
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+
+# Database
+sqlalchemy==2.0.25
+alembic==1.13.1
+asyncpg==0.29.0
+psycopg2-binary==2.9.9
+
+# Telegram Bot
+aiogram==3.7.0
+
+# Validation & Serialization
+pydantic==2.7.4
+pydantic-settings==2.3.4
+email-validator==2.1.0.post1
+
+# HTTP Client
+httpx==0.26.0
+aiohttp==3.9.3
+
+# File Storage & PDF
+boto3==1.34.34
+reportlab==4.0.9
+PyPDF2==3.0.1
+Pillow==10.2.0
+jinja2==3.1.3
+weasyprint==61.0
+
+# Utilities
+python-dotenv==1.0.1
+loguru==0.7.2
+orjson==3.9.13
+pytz==2024.1
+
+# Testing
+pytest==8.0.0
+pytest-asyncio==0.23.8
+pytest-cov==4.1.0
+
+# Development
+black==24.1.1
+isort==5.13.2
+flake8==7.0.0

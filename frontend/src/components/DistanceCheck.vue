@@ -107,7 +107,26 @@ const onResults = (results) => {
     isLoading.value = false;
 };
 
-const initCamera = () => {
+const initCamera = async () => {
+    // Check if camera is available (may not be in Telegram WebApp or some browsers)
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.warn('Camera API not available');
+        permissionGranted.value = false;
+        isLoading.value = false;
+        return;
+    }
+    
+    // Check camera permission first
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream.getTracks().forEach(track => track.stop()); // Stop test stream
+    } catch (err) {
+        console.warn('Camera permission denied:', err);
+        permissionGranted.value = false;
+        isLoading.value = false;
+        return;
+    }
+    
     faceMesh = new FaceMesh({locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
     }});

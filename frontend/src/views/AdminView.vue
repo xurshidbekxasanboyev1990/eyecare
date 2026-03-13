@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, watch } from 'vue';
+import { ref, reactive, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStorage } from '@vueuse/core';
 import { 
@@ -154,6 +154,19 @@ const resetDoctorForm = () => {
     };
     showDoctorForm.value = false;
     editingDoctor.value = null;
+};
+
+// Computed for current doctor form
+const currentDoctor = computed(() => {
+    return editingDoctor.value || newDoctor.value;
+});
+
+const updateCurrentDoctorField = (field, value) => {
+    if (editingDoctor.value) {
+        editingDoctor.value[field] = value;
+    } else {
+        newDoctor.value[field] = value;
+    }
 };
 
 const botSettings = useStorage('eyecareBotSettings', {
@@ -566,7 +579,8 @@ const enabledTestsCount = () => {
                                 <div>
                                     <label class="block text-sm font-bold text-slate-700 mb-2">Ism *</label>
                                     <input 
-                                        v-model="editingDoctor ? editingDoctor.name : newDoctor.name"
+                                        :value="currentDoctor.name"
+                                        @input="updateCurrentDoctorField('name', $event.target.value)"
                                         type="text"
                                         placeholder="Dr. Ism Familiya"
                                         class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none"
@@ -575,7 +589,8 @@ const enabledTestsCount = () => {
                                 <div>
                                     <label class="block text-sm font-bold text-slate-700 mb-2">Mutaxassislik</label>
                                     <input 
-                                        v-model="editingDoctor ? editingDoctor.specialty : newDoctor.specialty"
+                                        :value="currentDoctor.specialty"
+                                        @input="updateCurrentDoctorField('specialty', $event.target.value)"
                                         type="text"
                                         placeholder="Oftalmolog"
                                         class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none"
@@ -586,7 +601,8 @@ const enabledTestsCount = () => {
                             <div>
                                 <label class="block text-sm font-bold text-slate-700 mb-2">Tajriba</label>
                                 <input 
-                                    v-model="editingDoctor ? editingDoctor.experience : newDoctor.experience"
+                                    :value="currentDoctor.experience"
+                                    @input="updateCurrentDoctorField('experience', $event.target.value)"
                                     type="text"
                                     placeholder="10 yillik tajriba"
                                     class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none"
@@ -596,7 +612,8 @@ const enabledTestsCount = () => {
                             <div>
                                 <label class="block text-sm font-bold text-slate-700 mb-2">Klinika nomi</label>
                                 <input 
-                                    v-model="editingDoctor ? editingDoctor.clinic : newDoctor.clinic"
+                                    :value="currentDoctor.clinic"
+                                    @input="updateCurrentDoctorField('clinic', $event.target.value)"
                                     type="text"
                                     placeholder="Klinika nomi"
                                     class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none"
@@ -606,7 +623,8 @@ const enabledTestsCount = () => {
                             <div>
                                 <label class="block text-sm font-bold text-slate-700 mb-2">Manzil</label>
                                 <input 
-                                    v-model="editingDoctor ? editingDoctor.address : newDoctor.address"
+                                    :value="currentDoctor.address"
+                                    @input="updateCurrentDoctorField('address', $event.target.value)"
                                     type="text"
                                     placeholder="Shahar, tuman, manzil"
                                     class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none"
@@ -617,7 +635,8 @@ const enabledTestsCount = () => {
                                 <div>
                                     <label class="block text-sm font-bold text-slate-700 mb-2">Telefon</label>
                                     <input 
-                                        v-model="editingDoctor ? editingDoctor.phone : newDoctor.phone"
+                                        :value="currentDoctor.phone"
+                                        @input="updateCurrentDoctorField('phone', $event.target.value)"
                                         type="text"
                                         placeholder="+998 XX XXX-XX-XX"
                                         class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none"
@@ -626,7 +645,8 @@ const enabledTestsCount = () => {
                                 <div>
                                     <label class="block text-sm font-bold text-slate-700 mb-2">Ish vaqti</label>
                                     <input 
-                                        v-model="editingDoctor ? editingDoctor.workHours : newDoctor.workHours"
+                                        :value="currentDoctor.workHours"
+                                        @input="updateCurrentDoctorField('workHours', $event.target.value)"
                                         type="text"
                                         placeholder="Dush-Juma: 09:00 - 18:00"
                                         class="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-blue focus:border-transparent outline-none"
